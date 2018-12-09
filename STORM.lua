@@ -115,7 +115,7 @@ SUDO = tonumber(sudos.SUDO)
 sudo_users = {SUDO}
 SUDOUSERNAME = sudos.USERNAME
 DEVSTOR = sudos.token:match("(%d+)")  
-NAMEBOT = (tahadevstorm:get(DEVSTOR..'storm:name') or 'ستورم')
+NAMEBOT = (tahadevstorm:get(DEVSTOR..'storm:name') or 'تاو')
 bot_id = sudos.token:match("(%d+)")  
 chaneel = sudos.token 
 function is_devtaha(msg)  local ta = false  for k,v in pairs(sudo_users) do  if msg.sender_user_id_ == v then  ta = true  end  end  return ta  end 
