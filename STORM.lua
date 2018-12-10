@@ -8590,7 +8590,7 @@ t = 'مميز عام 🌟'
 elseif tahadevstorm:sismember(DEVSTOR..'vip:group'..msg.chat_id_,msg.sender_user_id_) then
 t = 'عضو مميز ⭐'
 else
-t = 'عظو 👶'
+t = 'عضو 👶'
 end
 local zo = '\n📮¦ رتبة البوت » ❲ {'..t..'} ❳\n📬¦ رتبتة الكروب » ❲ ❛'..rtpa..'❜ ❳\n💥'
 monsend(msg,msg.chat_id_,zo,msg.sender_user_id_)   
