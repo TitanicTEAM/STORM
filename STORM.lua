@@ -1424,10 +1424,6 @@ storm_sendMsg(msg.chat_id_, msg.id_, 1,(text), 1, 'md')
 else
 local taha = '\n📮¦ Welcome my friend '..username..''..
 '\n📬¦ My name is  ❪'..NAMEBOT..'❫'..
-'\ n⭐️|European protection specialist'.
-'\ n🔖| To activate the bot follow the following' ..
-'\ n⚀| Add the bot to the group' ..
-'\ n⚁| Lift Batman in the group' ..
 '\nـــــــــــــــــــــــــــــــــــــــــــــــــــــــــ'..
 '\n🎭¦ For Sudo ❪'..SUDOUSERNAME..'❫'
 storm_sendMsg(msg.chat_id_, msg.id_, 1,taha, 1, 'md') 
