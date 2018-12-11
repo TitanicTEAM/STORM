@@ -1422,15 +1422,14 @@ if start then
 local text = ''..check_markdown(start)..'' 
 storm_sendMsg(msg.chat_id_, msg.id_, 1,(text), 1, 'md')  
 else
-local taha = '\n📮¦ اهلا بك عزيزي '..username..''..
-'\n📬¦ انا بوت اسمي ❪'..NAMEBOT..'❫'..
-'\n🗣¦ اختصاصي حماية كروبات المتفاعله'..
-'\n🔖¦ لتفعيل البوت اتبع خطواتي'..
-'\n✋🏿¦ اضف البوت الى المجموعه'..
-'\n👮🏾‍♀️¦ ارفع البوت ادمن في المجموعه'..
-'\n🕵🏽¦ سيتم تفعيل البوت ورفع مشرفي الكروب'..
+local taha = '\n📮¦ Welcome my friend '..username..''..
+'\n📬¦ My name is  ❪'..NAMEBOT..'❫'..
+'\ n⭐️|European protection specialist'.
+'\ n🔖| To activate the bot follow the following' ..
+'\ n⚀| Add the bot to the group' ..
+'\ n⚁| Lift Batman in the group' ..
 '\nـــــــــــــــــــــــــــــــــــــــــــــــــــــــــ'..
-'\n🎭¦ مطور البوت ❪'..SUDOUSERNAME..'❫'
+'\n🎭¦ For Sudo ❪'..SUDOUSERNAME..'❫'
 storm_sendMsg(msg.chat_id_, msg.id_, 1,taha, 1, 'md') 
 end 
 end  
