@@ -1467,7 +1467,7 @@ local pvstart = tahadevstorm:get(DEVSTOR.."pvstart")
 if pvstart then    
 storm_sendMsg(msg.sender_user_id_, 0, 1, ''..check_markdown(pvstart)..'', 1, "md")    
 else    
-storm_sendMsg(msg.sender_user_id_, msg.id_, 1, '📬*¦* تم آرسـآل رسـآلتگ آلى آلمـطـور\n*📛¦* اشترك في قناة المطور \n*🚸¦* [اضغط هنا للدخول الى قناة](https://t.me/joinchat/AAAAAEQLtdQefQBS6tkhVA) \n', 1, "md")    
+storm_sendMsg(msg.sender_user_id_, msg.id_, 1, '📬*¦* تم آرسـآل رسـآلتگ آلى آلمـطـور\n*📬¦* سـآرد عليگ في آقرب وقت \n*🤠¦* [معرف قناة التطوير](https://t.me/joinchat/AAAAAEQLtdQefQBS6tkhVA) \n', 1, "md")    
 end     
 if not tahadevstorm:sismember(DEVSTOR.."usersbot",msg.chat_id_) then    
 tahadevstorm:sadd(DEVSTOR.."usersbot",msg.chat_id_)    
