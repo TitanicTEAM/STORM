@@ -8353,14 +8353,6 @@ return false  end
 end 
 getMessage(msg.chat_id_,msg.reply_to_message_id_,id_reply)   
 end 
- if text ==('المعرف') and not msg.username_ then  
-function id_reply(extra, result, success)   
-if result.username_ then 
-zo = '*📮¦ معرفه  ⟀ *\n\n*📬¦ ➺⦅* [@'..result.username_..']* ⦆*\n' 
-return false  end 
-end 
-getMessage(msg.chat_id_,msg.reply_to_message_id_,id_reply)   
-end   
 if text == "مطورين البوت" or text == "اريد بوت" or text == "المطور" or text == "مطور" then  
 local dev = tahadevstorm:get(DEVSTOR.."dev") 
 if dev then 
