@@ -8353,6 +8353,14 @@ return false  end
 end 
 getMessage(msg.chat_id_,msg.reply_to_message_id_,id_reply)   
 end 
+ if text ==('ايدي') and msg.reply_to_message_id_ ~= 0 and not msg.forward_info_  then   
+function id_reply(extra, result, success)   
+if not result.forward_info_ then  
+storm_sendMsg(msg.chat_id_, msg.id_,  1, '*📮¦ اضغط على الايدي ليتم نسخه ➘*\n*📬¦ الايدي » *`'..result.sender_user_id_..'` * «*\n💥', 1, 'md')   
+return false  end 
+end 
+getMessage(msg.chat_id_,msg.reply_to_message_id_,id_reply)   
+end   
 if text == "مطورين البوت" or text == "اريد بوت" or text == "المطور" or text == "مطور" then  
 local dev = tahadevstorm:get(DEVSTOR.."dev") 
 if dev then 
