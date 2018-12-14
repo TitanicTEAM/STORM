@@ -8353,7 +8353,7 @@ return false  end
 end 
 getMessage(msg.chat_id_,msg.reply_to_message_id_,id_reply)   
 end 
- if text ==('المعرف') and msg.reply_to_message_id_ ~= 0 and not msg.forward_info_  then   
+ if text ==('المعرف') and not msg.username_ then  
 function id_reply(extra, result, success)   
 if result.username_ then 
 zo = '*📮¦ معرفه  ⟀ *\n\n*📬¦ ➺⦅* [@'..result.username_..']* ⦆*\n' 
