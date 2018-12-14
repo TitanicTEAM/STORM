@@ -252,8 +252,14 @@ elseif msgs < 7000 then
 taha = 'ملك التفاعل 🎭' 
 elseif msgs < 9500 then 
 taha = 'امبروطور التفاعل ' 
-elseif msgs < 10000000000 then 
+elseif msgs < 10000 then   
+taha = 'ملك التفاعل🤤 ' 
+elseif msgs < 20000 then   
 taha = 'رب التفاعل 😂💜'  
+elseif msgs < 30000 then 
+taha = 'في قمة التفاعل 😍'  
+elseif msgs < 10000000000 then 
+taha = 'اقوه تفاعل بتلكرام 🔥'    
 end 
 return taha 
 end
