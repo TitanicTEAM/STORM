@@ -8355,8 +8355,8 @@ getMessage(msg.chat_id_,msg.reply_to_message_id_,id_reply)
 end 
  if text ==('المعرف') and msg.reply_to_message_id_ ~= 0 and not msg.forward_info_  then   
 function id_reply(extra, result, success)   
-if not result.forward_info_ then  
-storm_sendMsg(msg.chat_id_, msg.id_,  1, '*📮¦ اضغط على المعرف ليتم نسخه ➘*\n*📬¦ معرفه » *`'..result.username_..'` * «*\n💥', 1, 'md')   
+if result.username_ then 
+zo = '*📮¦ معرفه  ⟀ *\n\n*📬¦ ➺⦅* [@'..result.username_..']* ⦆*\n' 
 return false  end 
 end 
 getMessage(msg.chat_id_,msg.reply_to_message_id_,id_reply)   
