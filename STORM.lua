@@ -8462,11 +8462,6 @@ local taha = '*📨¦ عدد رسائلك هنا » ❪ '..getmsgs..' ❫ رسا
 storm_sendMsg(msg.chat_id_, msg.id_, 1,taha, 1, 'md') 
 end 
 end
-if text == "عدد السحكات" or text == "سحكاتي" or text == "msg" then 
-local edit = tahadevstorm:get(DEVSTOR..'user:editmsg:'..msg.chat_id_..':'..msg.sender_user_id_) or 0
-local taha = '📨┇عدد سحكاتك ~⪼ *{"..edit.."}*", 1, 'md')
-storm_sendMsg(msg.chat_id_, msg.id_, 1,taha, 1, 'md')    
-end  
 if text == "معرفي"  then  
 function getmepar(extra,result,success)  
 if result.username_ then 
