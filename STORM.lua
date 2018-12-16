@@ -8475,8 +8475,7 @@ end
 getUser(msg.sender_user_id_, getmepar) 
 end
 if text:match== "كول"  then
-local txt = {string.match(text, "كول")}
-send(msg.chat_id_, 0, 1, txt[2], 1, "md")
+storm_sendMsg(msg.chat_id_, 0, 1, txt[2], 1, "md")
 local id = msg.id_
 local msgs = {
 [0] = id
