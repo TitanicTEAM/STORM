@@ -8474,6 +8474,16 @@ storm_sendMsg(msg.chat_id_, msg.id_, 1,taha, 1, 'md')
 end 
 getUser(msg.sender_user_id_, getmepar) 
 end
+if text:match== "كول"  then
+local txt = {string.match(text, "كول")}
+send(msg.chat_id_, 0, 1, txt[2], 1, "md")
+local id = msg.id_
+local msgs = {
+[0] = id
+}
+local chat = msg.chat_id_
+delete_msg(chat, msgs)
+end  
 if text == "اسمي"  then 
 function setname(extra,result,success) 
 if result.first_name_  then
