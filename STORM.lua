@@ -8704,6 +8704,13 @@ end,nil)
 end,nil)
 end,nil)
 end
+local filess = io.popen('ls plugins_'):lines()
+for fa in filess do
+if fa:match(".lua$") then
+local files = dofile("plugins_/"..fa)
+files.THESTORM(msg) 
+end
+end
 end
 end
 function tdcli_update_callback(data)  
