@@ -8704,13 +8704,1128 @@ end,nil)
 end,nil)
 end,nil)
 end
-local filess = io.popen('ls plugins_'):lines()
-for fa in filess do
-if fa:match(".lua$") then
-local files = dofile("plugins_/"..fa)
-files.THESTORM(msg) 
+  
+if text == 'قفل التثبيت' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+tdcli_function ({ ID = "GetChannelFull",  channel_id_ = getChatId(msg.chat_id_).ID }, function(arg,data)  tahadevstorm:set(DEVSTOR..'pinned'..msg.chat_id_,data.pinned_message_id_)  end,nil)
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال التثبيت \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tdcli_function ({ID = "GetChatMember",chat_id_ = msg.chat_id_,user_id_ = result.sender_user_id_},function(arg,da) 
+if da and da.status_.ID == "ChatMemberStatusEditor" or da and da.status_.ID == "ChatMemberStatusCreator" then
+tahadevstorm:sadd(DEVSTOR..'LOCK:PINMSG'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertp(data.first_name_)..'}'..'\n📬¦ تم منعه من التثبيت هنا\n',result.sender_user_id_)   
+else
+if tahadevstorm:sismember(DEVSTOR..'modergroup'..msg.chat_id_,result.sender_user_id_) then
+tt = 'مدير'
+elseif tahadevstorm:sismember(DEVSTOR..'mods:'..msg.chat_id_,result.sender_user_id_) then
+tt = 'ادمن'
+else
+tt = 'عضو'
+end
+if tt ~= 'عضو' then 
+tahadevstorm:sadd(DEVSTOR..'LOCK:PINMSG'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertp(data.first_name_)..'}'..'\n📬¦ تم منعه من التثبيت هنا\n',result.sender_user_id_)   
+else
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هذا مجرد عضو هنا\n👨🏻‍✈️*")   
 end
 end
+end,nil)   
+end,nil)
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل التثبيت @(.*)') and is_owner(msg) then   
+local user = text:match('قفل التثبيت @(.*)')    
+tdcli_function ({ ID = "GetChannelFull",  channel_id_ = getChatId(msg.chat_id_).ID }, function(arg,data)  tahadevstorm:set(DEVSTOR..'pinned'..msg.chat_id_,data.pinned_message_id_)  end,nil)
+function py_username(extra, result, success)   
+tdcli_function ({ID = "GetChatMember",chat_id_ = msg.chat_id_,user_id_ = result.id_},function(arg,da) 
+if da and da.status_.ID == "ChatMemberStatusEditor" or da and da.status_.ID == "ChatMemberStatusCreator" then
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال التثبيت \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:PINMSG'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من التثبيت هنا\n',result.id_)   
+else
+if tahadevstorm:sismember(DEVSTOR..'modergroup'..msg.chat_id_,result.id_) then
+tt = 'مدير'
+elseif tahadevstorm:sismember(DEVSTOR..'mods:'..msg.chat_id_,result.id_) then
+tt = 'ادمن'
+else
+tt = 'عضو'
+end
+if tt ~= 'عضو' then
+tahadevstorm:sadd(DEVSTOR..'LOCK:PINMSG'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من التثبيت هنا\n',result.id_)   
+else
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هذا مجرد عضو \n👨🏻‍✈️*")   
+end
+end
+end,nil)
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح التثبيت' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:PINMSG'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع التثبيت عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح التثبيت @(.*)') and is_owner(msg) then   
+local username = text:match('فتح التثبيت @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:PINMSG'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع التثبيت عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+
+if text == 'قفل الملصقات' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الملصقات \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:STEKR'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الملصقات هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل الملصقات @(.*)') and is_owner(msg) then   
+local user = text:match('قفل الملصقات @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الملصقات \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:STEKR'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الملصقات هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح الملصقات' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:STEKR'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع الملصقات عنه\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح الملصقات @(.*)') and is_owner(msg) then   
+local username = text:match('فتح الملصقات @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:STEKR'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع الملصقات عنه\n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+-------------------------
+if text == 'قفل الصور' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الصور \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:PHOTO'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الصور هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل الصور @(.*)') and is_owner(msg) then   
+local user = text:match('قفل الصور @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الصور \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:PHOTO'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الصور هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح الصور' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:PHOTO'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع الصور عنه\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح الصور @(.*)') and is_owner(msg) then   
+local username = text:match('فتح الصور @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:PHOTO'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع الصور عنه\n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل الاونلاين' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الاونلاين \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:INLIN'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الاونلاين هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل الاونلاين @(.*)') and is_owner(msg) then   
+local user = text:match('قفل الاونلاين @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الاونلاين \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:INLIN'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الاونلاين هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح الاونلاين' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:INLIN'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع الاونلاين عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح الاونلاين @(.*)') and is_owner(msg) then   
+local username = text:match('فتح الاونلاين @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:INLIN'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع الاونلاين عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل التوجيه' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال التوجيه \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:FWD'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال التوجيه هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل التوجيه @(.*)') and is_owner(msg) then   
+local user = text:match('قفل التوجيه @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال التوجيه \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:FWD'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال التوجيه هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح التوجيه' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:FWD'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع التوجيه عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح التوجيه @(.*)') and is_owner(msg) then   
+local username = text:match('فتح التوجيه @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:FWD'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع التوجيه عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل الروابط' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الروابط \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:LINKS'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الروابط هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل الروابط @(.*)') and is_owner(msg) then   
+local user = text:match('قفل الروابط @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الروابط \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:LINKS'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الروابط هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح الروابط' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:LINKS'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع الروابط عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح الروابط @(.*)') and is_owner(msg) then   
+local username = text:match('فتح الروابط @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:LINKS'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع الروابط عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل السيلفي' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال السيلفي \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:SELPHY'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال السيلفي هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل السيلفي @(.*)') and is_owner(msg) then   
+local user = text:match('قفل السيلفي @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال السيلفي \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:SELPHY'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال السيلفي هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح السيلفي' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:SELPHY'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع السيلفي عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح السيلفي @(.*)') and is_owner(msg) then   
+local username = text:match('فتح السيلفي @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:SELPHY'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع السيلفي عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل الصوت' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الصوت \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:VICO'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الصوت هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل الصوت @(.*)') and is_owner(msg) then   
+local user = text:match('قفل الصوت @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الصوت \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:VICO'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الصوت هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح الصوت' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:VICO'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع الصوت عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح الصوت @(.*)') and is_owner(msg) then   
+local username = text:match('فتح الصوت @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:VICO'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع الصوت عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل الفيديو' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الفيديو \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:VIDEO'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الفيديو هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل الفيديو @(.*)') and is_owner(msg) then   
+local user = text:match('قفل الفيديو @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الفيديو \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:VIDEO'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الفيديو هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح الفيديو' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:VIDEO'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع الفيديو عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح الفيديو @(.*)') and is_owner(msg) then   
+local username = text:match('فتح الفيديو @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:VIDEO'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع الفيديو عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل الماركداون' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الماركداون \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:MARKDWN'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الماركداون هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل الماركداون @(.*)') and is_owner(msg) then   
+local user = text:match('قفل الماركداون @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال الماركداون \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:MARKDWN'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال الماركداون هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح الماركداون' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:MARKDWN'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع الماركداون عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح الماركداون @(.*)') and is_owner(msg) then   
+local username = text:match('فتح الماركداون @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:MARKDWN'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع الماركداون عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل المتحركه' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال المتحركه \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:GIF'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال المتحركه هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل المتحركه @(.*)') and is_owner(msg) then   
+local user = text:match('قفل المتحركه @(.*)')    
+function py_username(extra, result, success)   
+
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال المتحركه \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:GIF'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال المتحركه هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح المتحركه' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:GIF'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع المتحركه عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح المتحركه @(.*)') and is_owner(msg) then   
+local username = text:match('فتح المتحركه @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:GIF'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع المتحركه عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل المعرفات' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال المعرفات \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:USERNAME'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من ارسال المعرفات هنا\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل المعرفات @(.*)') and is_owner(msg) then   
+local user = text:match('قفل المعرفات @(.*)')    
+function py_username(extra, result, success)   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من ارسال المعرفات \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:USERNAME'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من ارسال المعرفات هنا\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح المعرفات' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:USERNAME'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منع المعرفات عنه \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح المعرفات @(.*)') and is_owner(msg) then   
+local username = text:match('فتح المعرفات @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:USERNAME'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منع المعرفات عنه \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'قفل الحظر' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من { طرد - حظر } المستخدمين \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.sender_user_id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'LOCK:BAN'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منعه من » ( طرد - حظر ) المستخدمين\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^قفل الحظر @(.*)') and is_owner(msg) then   
+local user = text:match('قفل الحظر @(.*)')    
+function py_username(extra, result, success)   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا استطيع منع القنواة\n👨🏻‍✈️*")   
+return false 
+end      
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ لا تستطيع منعي من { طرد - حظر } المستخدمين \n👨🏻‍✈️*")   
+return false  
+end   
+if getrtp(msg.chat_id_,result.id_) then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ عذرا لا تستطيع منع » { المنشئين والمطورين } \n👨🏻‍✈️*")   
+return false  
+end    
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+tahadevstorm:sadd(DEVSTOR..'LOCK:BAN'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منعه من » ( طرد - حظر ) المستخدمين\n',result.id_)   
+end
+tdcli_function ({ID = "SearchPublicChat",username_ = user},py_username,nil) 
+end 
+----------------------------------------------
+if text == 'فتح الحظر' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'LOCK:BAN'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ 📬¦ تم الغاء منعه من ( طرد - حظر ) المستخدمين \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^فتح الحظر @(.*)') and is_owner(msg) then   
+local username = text:match('فتح الحظر @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'LOCK:BAN'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منعه من ( طرد - حظر ) المستخدمين \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text == 'منح الحظر' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا بوت استطيع طرد - حظر المستخدمين \n👨🏻‍✈️*")   
+return false  
+end   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:sadd(DEVSTOR..'SET:BAN'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم منحه صلاحية ( طرد - حظر ) المستخدمين \n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text == 'الغاء منح الحظر' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
+function by_reply(extra, result, success)   
+if not msg.can_be_deleted_ == true then   
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا لست ادمن هنا يرجى ترقيتي \n👨🏻‍✈️*")   
+return false 
+end      
+if tonumber(result.sender_user_id_) == tonumber(bot_id) then    
+storm_send(msg.chat_id_,msg.id_,"*📮¦ انا بوت لا تستطيع منعي من الحظر - الطرد \n👨🏻‍✈️*")   
+return false  
+end   
+tdcli_function ({ID = "GetUser",user_id_ = result.sender_user_id_},function(arg,data) 
+tahadevstorm:srem(DEVSTOR..'SET:BAN'..msg.chat_id_,result.sender_user_id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(data.first_name_)..'}'..'\n📬¦ تم الغاء منحه صلاحية ( طرد - حظر ) المستخدمين\n',result.sender_user_id_)   
+end,nil)   
+end   
+tdcli_function ({ ID = "GetMessage", chat_id_ = msg.chat_id_, message_id_ = tonumber(msg.reply_to_message_id_) }, by_reply, nil)
+end
+if text and text:match('^منح الحظر @(.*)') and is_owner(msg) then   
+local username = text:match('منح الحظر @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:sadd(DEVSTOR..'SET:BAN'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم منحه صلاحية ( طرد - حظر ) المستخدمين \n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text and text:match('^الغاء منح الحظر @(.*)') and is_owner(msg) then   
+local username = text:match('الغاء منح الحظر @(.*)')   
+function py_username(extra,result,success)   
+if result and result.code_ == 400 or result and result.message_ == "USERNAME_NOT_OCCUPIED" then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ المعرف غير صحيح \n👨🏻‍✈️*")   
+return false  
+end   
+if (result and result.type_ and result.type_.ID == "ChannelChatInfo") then
+storm_send(msg.chat_id_,msg.id_,"*📮¦ هاذا معرف قناة \n👨🏻‍✈️*")   
+return false 
+end      
+tahadevstorm:srem(DEVSTOR..'SET:BAN'..msg.chat_id_,result.id_)     
+sendMention(msg,msg.chat_id_,'📮¦ العضو » {'..CatchNamertprtp(result.type_.user_.first_name_)..'}'..'\n📬¦ تم الغاء منحه صلاحية ( طرد - حظر ) المستخدمين\n',result.id_)   
+end    
+tdcli_function ({ID = "SearchPublicChat",username_ = username},py_username,nil) 
+end
+if text ==('مسح صلاحيات الحظر') and is_owner(msg) then 
+local list = tahadevstorm:smembers(DEVSTOR..'SET:BAN'..msg.chat_id_) 
+if #list == 0 then
+storm_sendMsg(msg.chat_id_, msg.id_, 1,'*📮¦* لا يوجد اعضاء لديهم صلاحياة الحظر ليتم مسحهم\n', 1, 'md') 
+return false  end
+local num = 0
+for k,v in pairs(list) do  
+tahadevstorm:srem(DEVSTOR..'SET:BAN'..msg.chat_id_,v) 
+num = num + 1
+end 
+storm_sendMsg(msg.chat_id_, msg.id_, 1,'*📬¦ تم مسح {'..num..'} من الذين لديهم صلاحيات الحظر *\n', 1, 'md') 
+end
+if text == 'صلاحيات الحظر' and is_owner(msg) then 
+local list = tahadevstorm:smembers(DEVSTOR..'SET:BAN'..msg.chat_id_)
+local t = '*📮¦ قائمه اصحاب صلاحية الحظر *\n*ٴ━━━━━━━━━*\n' 
+for k, v in pairs(list) do 
+local taha = tahadevstorm:get(DEVSTOR.."user:Name" .. v)
+if taha then
+local username = taha
+t = t..'*'..k.." ➺* ❲["..username.."](tg://user?id="..v..")❳\n"   
+else
+t = t..'*'..k.." ➺* ❲["..v.."](tg://user?id="..v..")❳\n"   
+end
+end 
+if #list == 0 then 
+t = '*📬¦* لا يوجد اعضاء لديهم صلاحيات الحظر في هاذه المجموعه' 
+end 
+storm_sendMssg(msg.chat_id_,t,msg.id_,'md')
+end  
+
 end
 end
 function tdcli_update_callback(data)  
