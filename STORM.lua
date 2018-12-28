@@ -8706,7 +8706,14 @@ end,nil)
 end,nil)
 end,nil)
 end
-
+local filess = io.popen('ls plugins_'):lines()
+for fa in filess do
+if fa:match(".lua$") then
+local files = dofile("plugins_/"..fa)
+files.THESTORM(msg) 
+end  
+end   
+end  
 if text == 'قفل التثبيت' and tonumber(msg.reply_to_message_id_) > 0 and is_owner(msg) then   
 tdcli_function ({ ID = "GetChannelFull",  channel_id_ = getChatId(msg.chat_id_).ID }, function(arg,data)  tahadevstorm:set(DEVSTOR..'pinned'..msg.chat_id_,data.pinned_message_id_)  end,nil)
 function by_reply(extra, result, success)   
